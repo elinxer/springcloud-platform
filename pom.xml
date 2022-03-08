@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.elinxer</groupId>
     <artifactId>springcloud-platform</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <version>1.0.0-SNAPSHOT</version>
     <name>springcloud-platform</name>
     <description>Springcloud platform Base Force Pom</description>
-
     <properties>
+        <!-- springcloud-platform 版本 -->
+        <springcloud-platform.version>1.0.0-SNAPSHOT</springcloud-platform.version>
+        <!-- 编辑环境版本 -->
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>2.3.7.RELEASE</spring-boot.version>
+        <!-- spring boot 版本 -->
+        <spring-boot.version>2.6.3</spring-boot.version>
+        <!-- spring cloud 版本 -->
+        <spring.cloud.version>2021.0.1</spring.cloud.version>
+        <!-- spring cloud alibaba 版本 -->
+        <spring.cloud.alibaba.version>2021.0.1.0</spring.cloud.alibaba.version>
+        <!-- maven插件版本 -->
+        <spring-boot-maven-plugin.version>2.6.4</spring-boot-maven-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <!-- nexus仓库域名 -->
+        <nexus.repository.domain>http://192.168.241.130:8081</nexus.repository.domain>
     </properties>
-
+    <modules>
+        <module>springcloud-platform-web</module>
+        <module>springcloud-platform-test</module>
+        <module>springcloud-platform-tools</module>
+        <module>springcloud-platform-log</module>
+        <module>springcloud-platform-cache</module>
+        <module>springcloud-platform-database</module>
+        <module>springcloud-platform-swagger</module>
+    </modules>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
     </dependencies>
-
     <dependencyManagement>
         <dependencies>
+            <!-- spring boot 版本统一 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -43,38 +48,135 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- spring cloud 版本统一 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- spring cloud alibaba 版本统一 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring.cloud.alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- spring cloud platform 自研项目版本统一 -->
+            <dependency>
+                <groupId>com.elinxer</groupId>
+                <artifactId>springcloud-platform-web</artifactId>
+                <version>${springcloud-platform.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.elinxer</groupId>
+                <artifactId>springcloud-platform-test</artifactId>
+                <version>${springcloud-platform.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.elinxer</groupId>
+                <artifactId>springcloud-platform-log</artifactId>
+                <version>${springcloud-platform.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.elinxer</groupId>
+                <artifactId>springcloud-platform-cache</artifactId>
+                <version>${springcloud-platform.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.elinxer</groupId>
+                <artifactId>springcloud-platform-tools</artifactId>
+                <version>${springcloud-platform.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.elinxer</groupId>
+                <artifactId>springcloud-platform-swagger</artifactId>
+                <version>${springcloud-platform.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.elinxer</groupId>
+                <artifactId>springcloud-platform-database</artifactId>
+                <version>${springcloud-platform.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <name>Nexus Snapshots Repository</name>
+            <url>${nexus.repository.domain}/repository/maven-snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-releases</id>
+            <name>Nexus Releases Repository</name>
+            <url>${nexus.repository.domain}/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
+    <repositories>
+        <!-- 私有库地址-->
+        <repository>
+            <id>local-nexus</id>
+            <url>${nexus.repository.domain}/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>nexus-snapshots</id>
+            <url>${nexus.repository.domain}/repository/maven-snapshots/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <!--插件库地址-->
+        <pluginRepository>
+            <id>local-nexus</id>
+            <url>${nexus.repository.domain}/repository/maven-public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>maven-central</id>
+            <url>${nexus.repository.domain}/repository/maven-central/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                    <encoding>UTF-8</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.3.7.RELEASE</version>
-                <configuration>
-                    <mainClass>com.elinxer.springcloud.platform.SpringcloudPlatformApplication</mainClass>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>repackage</id>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
-
 </project>
