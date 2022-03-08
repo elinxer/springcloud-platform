@@ -26,6 +26,9 @@
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <!-- nexus仓库域名 -->
         <nexus.repository.domain>http://192.168.241.130:8081</nexus.repository.domain>
+        <!-- 常用第三方包依赖版本 -->
+        <projectlombok.lombox.version>1.18.12</projectlombok.lombox.version>
+        <alibaba.fastjson.version>1.2.73</alibaba.fastjson.version>
     </properties>
     <modules>
         <module>springcloud-platform-web</module>
@@ -101,7 +104,16 @@
                 <version>${springcloud-platform.version}</version>
             </dependency>
             <!-- 统一第三方依赖包版本控制（常用才增加，少用的项目自行处理） -->
-
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${projectlombok.lombox.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${alibaba.fastjson.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <distributionManagement>
