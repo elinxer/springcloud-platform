@@ -100,6 +100,8 @@
                 <artifactId>springcloud-platform-database</artifactId>
                 <version>${springcloud-platform.version}</version>
             </dependency>
+            <!-- 统一第三方依赖包版本控制（常用才增加，少用的项目自行处理） -->
+
         </dependencies>
     </dependencyManagement>
     <distributionManagement>
