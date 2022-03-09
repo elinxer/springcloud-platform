@@ -1,4 +1,4 @@
-package com.elinxer.springcloud.platform.core.web;
+package com.elinxer.springcloud.platform.core.web.response;
 
 
 import com.alibaba.fastjson.JSON;
