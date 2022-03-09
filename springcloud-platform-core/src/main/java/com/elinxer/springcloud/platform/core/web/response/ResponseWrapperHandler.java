@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,17 +36,26 @@ public class ResponseWrapperHandler implements ResponseBodyAdvice<Object> {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        if (body instanceof Mono) {
-            return ((Mono<?>) body)
-                    .map(Response::ok)
-                    .switchIfEmpty(Mono.just(Response.ok()));
-        }
-        if (body instanceof Flux) {
-            return ((Flux<?>) body)
-                    .collectList()
-                    .map(Response::ok)
-                    .switchIfEmpty(Mono.just(Response.ok()));
-        }
+//        // 兼容流式编程
+//        if (body instanceof Mono) {
+//            return ((Mono<?>) body)
+//                    .map(Response::ok)
+//                    .switchIfEmpty(Mono.just(Response.ok()));
+//        }
+//        // 兼容流式编程
+//        if (body instanceof Flux) {
+//            return ((Flux<?>) body)
+//                    .collectList()
+//                    .map(Response::ok)
+//                    .switchIfEmpty(Mono.just(Response.ok()));
+//        }
+
+        // <dependency>
+        //            <groupId>io.projectreactor</groupId>
+        //            <artifactId>reactor-core</artifactId>
+        //            <version>3.3.0.RELEASE</version>
+        //        </dependency>
+
         if (body instanceof String) {
             return JSON.toJSONString(Response.ok(body));
         }
