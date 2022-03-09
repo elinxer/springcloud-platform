@@ -11,10 +11,6 @@
 
     <artifactId>springcloud-platform-test</artifactId>
 
-    <properties>
-        <maven-surefire-plugin.version>2.18</maven-surefire-plugin.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

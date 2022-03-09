@@ -32,6 +32,7 @@
         <!-- maven插件版本 -->
         <spring-boot-maven-plugin.version>2.6.4</spring-boot-maven-plugin.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>2.18</maven-surefire-plugin.version>
         <!-- nexus仓库域名 -->
         <nexus.repository.domain>http://192.168.241.130:8081</nexus.repository.domain>
         <!-- 常用第三方包依赖版本 -->
