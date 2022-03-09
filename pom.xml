@@ -47,6 +47,7 @@
         <module>springcloud-platform-database</module>
         <module>springcloud-platform-swagger</module>
         <module>springcloud-platform-parent</module>
+        <module>springcloud-platform-core</module>
     </modules>
     <dependencies>
     </dependencies>
@@ -110,6 +111,11 @@
             <dependency>
                 <groupId>com.elinxer</groupId>
                 <artifactId>springcloud-platform-database</artifactId>
+                <version>${springcloud-platform.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.elinxer</groupId>
+                <artifactId>springcloud-platform-core</artifactId>
                 <version>${springcloud-platform.version}</version>
             </dependency>
             <!-- 统一第三方依赖包版本控制（常用才增加，少用的项目自行处理） -->
