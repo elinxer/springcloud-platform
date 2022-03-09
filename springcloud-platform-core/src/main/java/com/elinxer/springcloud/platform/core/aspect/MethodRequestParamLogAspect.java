@@ -8,6 +8,16 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 /**
+ * 由于此类使用了Component用于随项目初始化
+ * 但本包名并没有在springboot扫描下，需要手动添加
+ * 默认情况下，@ComponentScan注解会扫描当前包及其所有子包中的组件。
+ * 而 @SpringBootApplication 注解包含了@ComponentScan，
+ * 所以 Spring Boot 框架会自动扫描 Spring Boot启动类当前包及其所有子包中的组件类。
+ * 而我们的组件因为不在自动扫描范围内，所以无效。
+ * 在添加扫描时注意别忘记添加自己的
+ * <p>
+ * 如@ComponentScan(value = {"com.example", "com.elinxer.springcloud.platform.core"})
+ *
  * @author elinx
  */
 @Slf4j
