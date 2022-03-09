@@ -46,6 +46,7 @@
         <module>springcloud-platform-cache</module>
         <module>springcloud-platform-database</module>
         <module>springcloud-platform-swagger</module>
+        <module>springcloud-platform-parent</module>
     </modules>
     <dependencies>
     </dependencies>
