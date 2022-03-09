@@ -42,7 +42,6 @@
         <module>springcloud-platform-web</module>
         <module>springcloud-platform-test</module>
         <module>springcloud-platform-tools</module>
-        <module>springcloud-platform-log</module>
         <module>springcloud-platform-cache</module>
         <module>springcloud-platform-database</module>
         <module>springcloud-platform-swagger</module>
