@@ -1,8 +1,8 @@
 package com.elinxer.springcloud.platform.core.validation.bean;
 
-import com.elinxer.springcloud.platform.core.bean.SimpleValidateResults;
 import com.elinxer.springcloud.platform.core.exception.ValidationException;
 import com.elinxer.springcloud.platform.core.validation.constant.ValidationErrorEnum;
+import com.elinxer.springcloud.platform.core.validation.validate.SimpleValidateResults;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.ConstraintViolation;

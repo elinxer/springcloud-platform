@@ -2,7 +2,7 @@ package com.elinxer.springcloud.platform.core.exception;
 
 
 import com.elinxer.springcloud.platform.core.bean.IErrorCode;
-import com.elinxer.springcloud.platform.core.bean.ValidateResults;
+import com.elinxer.springcloud.platform.core.validation.validate.ValidateResults;
 
 import java.util.List;
 
