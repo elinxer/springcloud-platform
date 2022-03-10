@@ -12,9 +12,6 @@ import javax.validation.ValidatorFactory;
 
 /**
  * 检查器自动装配类
- *
- * @author: zhengqh
- * @version:3.0.0
  */
 @Configuration
 public class BeanValidationAutoConfiguration  implements BeanPostProcessor {

@@ -4,11 +4,9 @@ import java.util.List;
 
 /**
  * 通用枚举的接口
- *
- * @author zhengqh
- * @since 3.0
  */
 public interface ItemDefine extends EnumDict<String> {
+
     String getText();
 
     String getValue();

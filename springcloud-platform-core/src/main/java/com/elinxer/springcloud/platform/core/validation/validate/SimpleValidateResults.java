@@ -5,9 +5,6 @@ import java.util.List;
 
 /**
  * 有效性检查结果
- *
- * @author zhengqh
- * @version 3.0.0
  */
 public class SimpleValidateResults implements ValidateResults {
 

@@ -3,9 +3,6 @@ package com.elinxer.springcloud.platform.core.constant;
 
 /**
  * 用户类型
- *
- * @author zhengqh
- * @version 3.0
  */
 public enum UserType {
 

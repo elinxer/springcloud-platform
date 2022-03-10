@@ -13,9 +13,6 @@ import java.util.Objects;
 
 /**
  * WebUtils 常用函数
- *
- * @author zhengqh
- * @since 3.0
  */
 public final class WebUtils {
     private WebUtils() {

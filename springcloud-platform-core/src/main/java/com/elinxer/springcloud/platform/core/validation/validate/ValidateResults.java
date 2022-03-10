@@ -6,8 +6,6 @@ import java.util.List;
 
 /**
  * 验证结果
- *
- * @author zhengqh
  */
 public interface ValidateResults extends Serializable {
 

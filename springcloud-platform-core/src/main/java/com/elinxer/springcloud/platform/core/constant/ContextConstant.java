@@ -2,9 +2,6 @@ package com.elinxer.springcloud.platform.core.constant;
 
 /**
  * 上下文常量工具类
- *
- * @author zhengqh
- * @version 3.0
  */
 public final class ContextConstant {
     private ContextConstant() {

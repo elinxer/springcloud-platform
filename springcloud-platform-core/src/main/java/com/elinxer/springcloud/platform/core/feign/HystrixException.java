@@ -3,9 +3,6 @@ package com.elinxer.springcloud.platform.core.feign;
 
 /**
  * feign client 避免熔断异常处理
- *
- * @author zhengqh
- * @version 2021-11-05
  */
 public class HystrixException extends HystrixBadRequestException {
 

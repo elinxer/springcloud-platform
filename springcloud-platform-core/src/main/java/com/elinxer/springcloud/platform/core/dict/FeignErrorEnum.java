@@ -6,7 +6,6 @@ import com.elinxer.springcloud.platform.core.bean.IErrorCode;
 /**
  * 系统异常常量
  */
-
 public enum FeignErrorEnum implements IErrorCode {
 
     /**

@@ -5,9 +5,6 @@ import lombok.Getter;
 
 /**
  * 删除标志的枚举（整个框架统一）
- *
- * @author zhengqh
- * @since 3.0
  */
 @AllArgsConstructor
 @Getter

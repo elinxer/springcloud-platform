@@ -2,9 +2,6 @@ package com.elinxer.springcloud.platform.core.constant;
 
 /**
  *  注册中心注册的服务名称
- *
- * @author zhengqh
- * @date 2021-08-13
  */
 public interface ServiceConst {
 

@@ -16,10 +16,6 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-/**
- * @author zhengqh
- * @since 3.0
- */
 @JSONType(deserializer = EnumDict.EnumDictJSONDeserializer.class)
 public interface EnumDict<V> extends JSONSerializable {
 
