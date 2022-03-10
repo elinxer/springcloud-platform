@@ -1,4 +1,3 @@
-
 package com.elinxer.springcloud.platform.core.snowflakeId;
 
 

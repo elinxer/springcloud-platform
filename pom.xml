@@ -38,6 +38,13 @@
         <!-- 常用第三方包依赖版本 -->
         <projectlombok.lombox.version>1.18.12</projectlombok.lombox.version>
         <alibaba.fastjson.version>1.2.73</alibaba.fastjson.version>
+
+        <!--springcloud-platform-core 使用附加库版本-->
+        <alibaba.transmittable-thread-local.version>2.12.1</alibaba.transmittable-thread-local.version>
+        <hutool.core.version>5.7.22</hutool.core.version>
+        <projectreactor.reactor-core.version>3.3.0.RELEASE</projectreactor.reactor-core.version>
+        <codehaus.jackson.jackson-mapper-asl.version>1.9.13</codehaus.jackson.jackson-mapper-asl.version>
+
     </properties>
     <modules>
         <module>springcloud-platform-web</module>
@@ -128,6 +135,28 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${alibaba.fastjson.version}</version>
+            </dependency>
+            <!--springcloud-platform-core 使用附加库版本-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${alibaba.transmittable-thread-local.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${codehaus.jackson.jackson-mapper-asl.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-core</artifactId>
+                <version>${hutool.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.projectreactor</groupId>
+                <artifactId>reactor-core</artifactId>
+                <version>${projectreactor.reactor-core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
