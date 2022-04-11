@@ -24,7 +24,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!-- spring boot 版本 -->
-        <spring-boot.version>2.6.3</spring-boot.version>
+        <spring-boot.version>2.6.6</spring-boot.version>
         <!-- spring cloud 版本 -->
         <spring.cloud.version>2021.0.1</spring.cloud.version>
         <!-- spring cloud alibaba 版本 -->

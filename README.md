@@ -6,7 +6,7 @@
 
 java 版本： java11
 
-spring boot 版本： 2.6.3
+spring boot 版本： 2.6.6
 
 spring cloud 版本： 2021.0.1
 
