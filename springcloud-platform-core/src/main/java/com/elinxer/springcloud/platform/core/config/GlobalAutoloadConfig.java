@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 通用包的自动装配类
+ * 通用包的自动装配类 此类指向启动类自动配置
+ *
+ * src/main/resources/META-INF/spring.factories
  *
  * @author elinx
  */
