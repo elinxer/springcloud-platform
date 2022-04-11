@@ -45,6 +45,9 @@
         <projectreactor.reactor-core.version>3.3.0.RELEASE</projectreactor.reactor-core.version>
         <codehaus.jackson.jackson-mapper-asl.version>1.9.13</codehaus.jackson.jackson-mapper-asl.version>
 
+        <!-- swagger knife4j 增强版文档 -->
+        <knife4j-spring-boot-starter.version>3.0.3</knife4j-spring-boot-starter.version>
+
     </properties>
     <modules>
         <module>springcloud-platform-web</module>
@@ -158,6 +161,13 @@
                 <artifactId>reactor-core</artifactId>
                 <version>${projectreactor.reactor-core.version}</version>
             </dependency>
+            <!--  swagger knife4j -->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j-spring-boot-starter.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <distributionManagement>
