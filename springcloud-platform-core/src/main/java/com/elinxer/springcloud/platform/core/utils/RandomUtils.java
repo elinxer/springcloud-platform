@@ -4,8 +4,10 @@ import java.util.Random;
 
 /**
  * 随机数工具，用于产生随机数，随机密码等
+ * @author elinx
  */
 public class RandomUtils {
+
     private static final Random RANDOM = new Random();
 
     public static Random getRandom() {
@@ -40,6 +42,12 @@ public class RandomUtils {
 
     public static String randomChar() {
         return randomChar(8);
+    }
+
+    public static void main(String[] args) {
+        for (int i = 0; i <= 100; i++) {
+            System.out.println("0x0" + Integer.toHexString(i));
+        }
     }
 
 }

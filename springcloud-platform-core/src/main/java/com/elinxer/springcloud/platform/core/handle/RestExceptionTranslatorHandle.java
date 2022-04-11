@@ -9,7 +9,9 @@ import com.elinxer.springcloud.platform.core.web.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -113,6 +115,23 @@ public class RestExceptionTranslatorHandle {
     }
 
     /**
+     * BindException 解析异常
+     * <p>
+     * 使用原因：如果未使用@RequestBody又使用实体类作为入参，异常会流入此异常
+     *
+     * @param exception BindException
+     * @return Response
+     */
+    @ExceptionHandler(BindException.class)
+    public Response handleException(BindException exception) {
+        log.error(exception.getMessage(), exception);
+        for (ObjectError error : exception.getBindingResult().getAllErrors()) {
+            return Response.error(400, error.getDefaultMessage());
+        }
+        return Response.error(400, "request params error.");
+    }
+
+    /**
      * JSONException 解析异常
      *
      * @param exception JSONException
@@ -208,6 +227,18 @@ public class RestExceptionTranslatorHandle {
         String msg = Optional.ofNullable(exception.getMessage()).orElse("服务器内部错误");
         log.error(exception.getMessage(), exception);
         return Response.error(500, msg);
+    }
+
+    /**
+     * 捕获 Exception异常
+     *
+     * @param exception Exception
+     * @return Response
+     */
+    @ExceptionHandler(Exception.class)
+    public Response handleStoreAuthException(Exception exception) {
+        log.error(exception.getMessage(), exception);
+        return Response.error(500, "ExceptionHandler: " + exception.getMessage());
     }
 
 }
