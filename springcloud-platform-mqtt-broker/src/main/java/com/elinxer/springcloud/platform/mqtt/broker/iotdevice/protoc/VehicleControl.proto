@@ -1,0 +1,530 @@
+syntax = "proto3";
+package com.elinxer.springcloud.platform.mqtt.broker.protoc;
+option java_outer_classname="RemoteContrlMessage";
+option optimize_for = SPEED;
+/*############################################################################*/
+// 指定文件级别选项 SPEED: 表示生成的代码运行效率高，但是由此生成的代码编译后会占用更多的空间。
+// CODE_SIZE: 和 SPEED恰恰相反，代码运行效率较低，但是由此生成的代码编译后会占用更少的空间，通常用于资源有限的平台，如Mobile。
+// LITE_RUNTIME: 生成的代码执行效率高，同时生成代码编译后的所占用的空间也是非常少。
+//可以在程序调试阶段使用 SPEED模式，而上线以后使用提升性能使用 LITE_RUNTIME 模式优化。
+/*############################################################################*/
+message RemoteContrlMessage{
+	eMessageType           type     = 1;
+	VehicleControlRequest  req      = 2;
+	VehicleControlResponse response = 3;
+}
+
+enum eMessageType{
+	MSG_NULL                                      = 0;
+    MSG_COMMAND                                   = 1;        // 命令类消息带数据的-例如设置拖拉机按照指定速度行驶。
+    MSG_RESPONSE                                  = 2;        // 回应类消息-针对 请求/命令/广播类消息进行应答。
+}
+
+message VehicleControlRequest {
+	Header header                      = 1; 
+    repeated ControlUnit control_units = 2;
+
+    message ControlUnit {
+        eCtrlType ctrlType = 1;
+        CtrlValue ctrlValue = 2;
+    }
+}
+
+message VehicleControlResponse {
+    Header header                                   = 1; 
+    repeated ControlResultUnit control_result_units = 2;
+	
+    message ControlResultUnit {
+        eCtrlType               ctrlType = 1;
+		ResponseValue           resValue = 2;
+		eCtrlRespType           respType = 3;
+    }
+}
+
+message Header
+{
+	uint32 version                                = 1; //数据上报协议版本信息
+    uint64 unix_timestamp                         = 2; //时间戳，精确到ms
+    int32  seq                                    = 3; //消息序列号
+    int32  session_id                             = 4; 
+    string task_id                                = 5;
+    string message_id                             = 6;
+    string operate_id                             = 7;
+}
+
+enum eCtrlRespType
+{
+	RESP_NONE                         = 0;
+	NOMAL_RESP                        = 1;
+	MDC_TIMEOUT_ERR_RESP              = 2;
+	SEND_MDC_ERR_RESP                 = 3;
+}
+
+enum eCtrlType
+{
+    CMD_NULL                                       = 0;     // 空命令
+    CMD_SET_AUTOPILOT_MODE                         = 1;     // 设置自动驾驶指令
+    CMD_SET_WORK_MODE                              = 2;     // 设置工作模式 STANDLONE MASTER SLAVE 
+    CMD_SET_HMI                                    = 3;     // 设置交互模式 CLOUD
+    CMD_SET_CANCEL_TASK                            = 4;     // 删除任务
+    CMD_UPDATE_ROUTE_PATH                          = 5;     // 检查是否可以更新路径
+    CMD_SET_ROUTE_PATH                             = 6;     // 设置全局路径
+    CMD_SET_ROUTE_PARAM                            = 7;     // 设置规划关键参数（包括AB/ABCD）
+    CMD_SET_TASK_FINISH_CONFIRM                    = 8;     // 任务完成确认 仅在自动驾驶端自动切换到任务完成时有效，其他情况下如需停止，调用CANCEL TASK
+    CMD_SET_CANCEL_TASK_CONFIRM                    = 9;     // 任务删除确认 
+    CMD_SET_BASE_LINE_TRANSLATION                  = 12;    // 设置基准线平移
+    CMD_SET_TRANSFER_LINE                          = 13;    // 设置交接行
+    CMD_SET_CONFIG_PARAM                           = 15;    // 配置参数
+    CMD_REQ_VERSION_INFO                           = 16;    // 请求版本信息
+    CMD_REQ_BASIC_STATE_INFO                       = 17;    // 请求基础状态信息 单机用 
+    CMD_REQ_CONFIG_PARAM                           = 18;    // 请求NCU配置参数
+    CMD_MANUAL_CONTROL                             = 20;    // 手动控制
+    CMD_CALIBRATION                                = 21;    // 传感器校准
+    CMD_CONFIRM_CALIBRATION                        = 22;    // 交互终端请求确实是否可以进行传感器校准  如返回OK，则直接发送校准指令即可
+	CTRL_TYPE_TBOX_PARAM_SET                       = 40;    // 终端设置
+	CTRL_TYPE_TBOX_PARAM_GET                       = 41;    // 终端查询
+    CMD_REQ_CONFIRM_CONTINUE_LAST_TASK             = 50;    // 确认是否继续上一任务  NCU->交互终端
+    CMD_REQ_TASK_FINISH_CONFIRM                    = 51;    // 请求确认是否结束任务
+}
+
+message CtrlValue
+{
+	AutopilotCmd            autopilot_cmd               = 1;   // 设置自动驾驶指令
+	WorkMode                work_mode                   = 2;   // 设置工作模式 STANDLONE MASTER SLAVE 
+	HmiType                 hmi_type                    = 3;   // 设置交互模式 CLOUD
+	UpdateRoutePath         update_route_path           = 5;   // 检查是否可以更新路径
+	RoutePath               route_path                  = 6;   // 设置全局路径
+	RouteParam              route_param                 = 7;   // 设置规划关键参数（包括AB/ABCD）
+	BaseLineTranslation     base_line_translation       = 12;  // 设置基准线平移
+	TransferLine            transfer_line               = 13;  // 设置交接行
+	ConfigParam          set_config_param            = 15;  // 配置参数
+	VersionModelType        version_model_type          = 16;  // 请求版本信息
+	ConfigType              req_config_param_type       = 18;  // 请求NCU配置参数
+
+	ManualControl           manual_control              = 20;  // 手动控制
+	Calibration             calibration                 = 21;  // 传感器校准
+	TboxParameterSet        tbox_set_parm               = 40;  // TBOX参数设置，详见参数设置表
+	TboxParameterGet        tbox_get_parm               = 41;  // TBOX参数查询
+
+	LastTask                last_task                   = 50;  // 确认是否继续上一任务  NCU->交互终端
+}
+
+message ResponseValue {
+	AutoPilotResponse        atuopilot_response                    = 1;
+	WorkModeResponse    work_mode_response                         = 2;
+	HmiResponse      hmi_mode_response                             = 3;
+	CancelTaskResponse    cancel_task_response                     = 4;
+	UpdateRoutePathResult        update_route_path_result          = 5;
+	RoutePath                    route_path                        = 6;
+	RouteParamResponse           route_param_response              = 7;
+	TaskFinishConfirmResponse  task_finish_confirm_response        = 8;
+	CancelTaskConfirmResponse  cancel_task_confirm_response        = 9;
+	BaseLineTranslationResponse  base_line_tran_response           = 12;    
+	TransferLineResponse         transfer_line_response            = 13;
+	ConfigParam               res_config_param                  = 15;//设置和查询配置应答
+	VersionModelInfo             version_model_inf                 = 16; 
+	ManualControlResponse       manual_control  = 20;
+	CalibrationResponse       calibration_response = 21; 
+	CalibrationConfirmResult     calibration_confirm_result        = 22;
+	TboxParameterSetResult       tbox_set_result                   = 40;
+	TboxParameterGetResponse     tbox_get_result                   = 41;
+
+	LastTaskContinue             last_task_continue                = 50;
+	TaskFinishConfirmResponse    task_finish_confirm               = 51;
+}
+
+/*****************************************CMD VCTL REQUEST START****************************************************/
+
+message TboxParameterSet
+{
+	uint32 id = 1;     //参数ID
+	string value = 2;  //参数值
+}
+
+message TboxParameterGet
+{
+	uint32 id = 1;//参数ID
+}
+
+enum AutopilotCmd
+{
+    AUTOPILOT_NULL  = 0;
+    AUTOPILOT_NA    = 1;
+    AUTOPILOT_START = 2;
+    AUTOPILOT_STOP  = 3;
+}
+
+enum WorkMode
+{
+    WORK_MODE_NULL       = 0;
+    WORK_MODE_NA         = 1;
+    WORK_MODE_STANDALONE = 2;
+    WORK_MODE_MASTER     = 3;
+    WORK_MODE_SLAVE      = 4;
+}
+
+enum HmiType
+{
+    HMI_NULL             = 0;
+    HMI_CLOUD            = 1;            
+    HMI_CLOUD_OFFLINE    = 2; 
+    HMI_APP              = 3;          
+}
+
+message UpdateRoutePath
+{
+    enum PathType 
+    {
+        PATH_NULL       = 0;
+        PATH_POINT      = 1;
+        PATH_PARAM      = 2; 
+    }
+    enum DevType
+    {
+        DEV_NULL        = 0;
+        DEV_STANDLONE   = 1;
+        DEV_MASTER      = 2;
+        DEV_SLAVE       = 3;
+    }
+    PathType path_type  = 1;
+    DevType dev_type    = 2;
+}
+
+message PointXYZ
+{
+    double x        = 1;    // 横坐标
+    double y        = 2;    // 纵坐标
+    double z        = 3;    // 高程
+    double yaw      = 4;    // 航向角
+    double v        = 5;    // 速度
+    double s        = 6;    // s-d-t坐标系
+    double cur      = 7;    // curvature 曲率
+    int32 back      = 8;    // 主要用于鱼尾 0 false 1 true或用于pearshape中的0:优化端, 1:非优化端
+    int32 strCur    = 9;    // 1:直线作业点, 0 :非作业直线点
+    bool reverse    = 10;   // 
+    int32 type      = 11;   //0 直线点,1鱼尾点,2梨形点       
+    double road_left_dis  = 12;
+    double road_right_dis = 13;   
+}
+
+message RoutePath
+{
+    enum RoutingType
+    {
+        ROUTE_TYPE_NULL                     = 0;
+        ROUTE_TYPE_AB_SINGLE                = 1;            // AB线模式 单线
+        ROUTE_TYPE_AB_MULTI                 = 2;            // AB线模式 多线
+        ROUTE_TYPE_ABCD_LOOP                = 3;            // ABCD 套圈模式
+        ROUTE_TYPE_ABCD_LOOP_WELT           = 4;            // ABCD 套圈模式 贴边
+        ROUTE_TYPE_ABCD_FISHTAIL            = 5;            // ABCD 鱼尾 
+        ROUTE_TYPE_ABCD_FISHTAIL_WELT       = 6;            // ABCD 鱼尾 贴边 
+        ROUTE_TYPE_ABCD_PEAR                = 7;            // ABCD 梨形  
+        ROUTE_TYPE_ABCD_PEAR_WELT           = 8;            // ABCD 梨形 贴边
+    }
+    int32 total_paths_num       = 1;
+    int32 cur_paths_num         = 2;
+    int32 total_point_num       = 3;
+    RoutingType routing_type    = 4;                        // 作业模式 
+    repeated PointXYZ point_xyz = 5;    
+}
+
+message Pose
+{
+    double px     = 1;
+    double py     = 2;
+    double pz     = 3;
+    double yaw    = 4;      //航向角
+    double pitch  = 5;      //俯仰角
+    double roll   = 6;
+}
+
+message RouteParam
+{
+    enum RoutingType
+    {
+        ROUTE_TYPE_NULL                             = 0;
+        ROUTE_TYPE_AB_SINGLE                        = 1;            // AB线模式 单线
+        ROUTE_TYPE_AB_MULTI                         = 2;            // AB线模式 多线
+        ROUTE_TYPE_ABCD_LOOP                        = 3;            // ABCD 套圈模式
+        ROUTE_TYPE_ABCD_LOOP_WELT                   = 4;            // ABCD 套圈模式 贴边
+        ROUTE_TYPE_ABCD_FISHTAIL                    = 5;            // ABCD 鱼尾 
+        ROUTE_TYPE_ABCD_FISHTAIL_WELT               = 6;            // ABCD 鱼尾 贴边 
+        ROUTE_TYPE_ABCD_PEAR                        = 7;            // ABCD 梨形  
+        ROUTE_TYPE_ABCD_PEAR_WELT                   = 8;            // ABCD 梨形 贴边
+    }
+    RoutingType routing_type                    = 1;                    // 作业模式 
+    repeated Pose pose                          = 2;                    // 田块打点AB值 
+    double  agricultural_imple_width            = 3;                    // 农机具幅宽
+    double  line_space                          = 4;                    // 作业行间距
+    int32   direction                           = 5;                    // 农机具安装偏移方向
+    double agricultural_imple_installerror      = 6;                    // 农机具安装误差
+    double turn_radius                          = 7;                    // 转弯半径
+    bool change_operation_ori                   = 8;                    // 是否更改默认朝向
+    bool reverse_flag                           = 9;                    //  是否支持倒档 
+    double hang_down_dist                       = 10;                     
+    double hang_up_dist                         = 11;
+    double pto_off_dist                         = 12;
+    double pto_on_dist                          = 13;
+    double target_vel                           = 14;
+}
+
+message BaseLineTranslation 
+{
+    enum TranslationType
+    {
+        TRANSLATION_NULL                            = 0;// 无效直 routing 不进行任何操作
+        TRANSLATION_AUTO                            = 1;// 自动进行基准线平移，参数无效
+        TRANSLATION_MANUAL                          = 2;// 手动继续宁基准线平移，参数有效
+    }
+    TranslationType  translation_type            = 1;// 基准线平移模式   
+    double baseline_offset                      = 2;// 偏移量 基准线平移方向，-代表左  +代表右
+}
+
+message TransferLine
+{
+    double agricultural_implement_offset         = 1;// 农机具偏移量 -代表左  +代表右
+}
+
+message GnssConfig
+{
+    string gnss_board           = 1;
+    string gnss_board_serial    = 2;
+    string gnss_board_baud_rate = 3;
+}
+
+message LocalizationConfig
+{
+    int32 ant_install_type    = 1;
+    int32 ant_offset          = 2;
+}
+
+message ControlConfig
+{
+    double lon_kp_t                 = 1;
+    double lon_ki_t                 = 2;
+    double lon_kd_i                 = 3;
+    double forward_len              = 4;
+    double wheel_base               = 5;
+    double wheel_distance_front     = 6;
+    double wheel_distance_back      = 7;
+    double min_radius               = 8;
+    double kp                       = 9;
+    double ki                       = 10;
+    double kd                       = 11;
+    double online_distance          = 12;
+    double online_thrta             = 13;
+    double kp_online                = 14;
+    double ki_online                = 15;
+    double kd_online                = 16;
+    double forward_len_online       = 17;
+    double slow_down_rate           = 18;
+    double saturation               = 19;
+    double integra_thres_hold       = 20;
+    double max_dec                  = 21;
+    double start_vel                = 22;
+    double slowdown_dist            = 23;
+    double max_acc                  = 24;
+    double hz                       = 25; 
+}
+
+message ChassisConfig
+{
+    double wheel_base               = 1;
+    double wheel_distance_front     = 2;
+}
+
+message PlanningConfig
+{
+    string dev_to_cloud_topic               = 1;   
+    string cloud_to_dev_topic               = 2;
+    string dev_ID                           = 3; //设备ID
+    double basicstateinfo_freq_free_app     = 4; //上报给App的基础状态信息，无任务时的上报频率
+    double basicstateinfo_freq_work_app     = 5; //上报给App的基础状态信息，有任务时的上报频率
+    double basicstateinfo_freq_free_cloud   = 6; //上报给Cloud的基础状态信息，无任务时的上报频率
+    double basicstateinfo_freq_work_cloud   = 7; //上报给Cloud的基础状态信息，有任务时的上报频率
+    double local_traj_freq                  = 8; //局部轨迹发布频率
+    double local_traj_length                = 9; //局部轨迹长度
+    bool disconnect_while_timeout           = 10; //App心跳超时是否断开链接
+    bool disconnect_stop_work_app           = 11; //HMI为App时，断开链接是否停止任务
+    bool disconnect_stop_work_cloud         = 12; //HMI为Cloud时，断开链接是否停止任务
+    string default_cloud_task_id            = 13; //默认task ID
+    int32 radio_baud_rate                   = 14; //多机电台波特率
+    string radio_serial                     = 15; //电台串口           
+}
+
+enum ConfigType
+{
+    CFG_NULL                      = 0;     
+    GNSS                          = 1;    // 设置GNSS板卡信息
+    LOCALIZATION                  = 2;    // 设置定位配置信息
+    CONTROL                       = 3;    // 设置控制配置参数信息
+    CHASSIS                       = 4;    // 设置地盘配置参数信息
+    PLANNING                      = 5;    // 设置决策信息
+}
+
+message ConfigParam
+{
+    ConfigType type                                     = 1;
+    GnssConfig gnss_config                              = 2;
+    LocalizationConfig localization_config              = 3;
+    ControlConfig control_config                        = 4;
+    ChassisConfig chassis_config                        = 5;
+    PlanningConfig planning_config                      = 6;
+}
+
+enum VersionModelType
+{
+    VERSION_NULL            = 0;
+    NCU                     = 1; //导航系统
+    MCU                     = 2; //安全MCU
+    SYSTEM                  = 3; //操作系统
+    CLOUD                   = 4; //云
+    PERCEPTION              = 5; //感知
+    WHEEL_ANGLE             = 6; //轮角传感器
+    STEER_MOTOR             = 7; //转向电机
+    CONTROLLER              = 8; //控制器
+    GNSS_BOARD              = 9; //GNSS 板卡型号
+    RADIO_BOARD             = 10; //电台型号
+    TBOX                    = 11; //TBOX
+    HY_CHASSIS              = 12; //底盘型号
+    IMPLEMENT               = 13; //农机具
+}
+
+message ManualControl
+{
+	string  vehicleType  = 1;//例“HY8088”
+	infoManualControl  manualControlInfo  = 2;
+
+	message infoManualControl
+	{
+        uint32  id      = 1;//消息参数ID，参考车云协议皓耘HY8088型收获机远控表
+        double  value   = 2;//消息值
+	}
+
+}
+
+enum CalibrationType
+{
+    TYPE_NULL               = 0;
+    TYPE_GNSS_ANT           = 1; // GNSS天线校准
+    TYPE_WHEEL_ANGLE        = 2; // 轮角校准
+    TYPE_STEER_MOTOR        = 3; // 转向电机校准
+    TYPE_HYDRAULIC_STEER    = 4; // 液压转向校准
+    TYPE_IMU                = 5; //
+}
+
+message Calibration
+{
+    CalibrationType type                = 1;
+    RouteParam route_param              = 2;
+}
+
+message LastTask
+{
+    Header task_header           = 1;
+    RouteParam route_param       = 2;
+    int32 last_work_path_num     = 3; //作业路径标号  机具细化处理
+    Pose last_pose               = 4; //最后一次作业点位置 
+}
+
+
+/*****************************************CMD VCTL REQUEST END****************************************************/
+
+/*****************************************CMD VCTL RESPONSE START****************************************************/
+message TboxParameterSetResult{
+	uint32 result = 1;//0:无意义 1：成功 2：失败
+	int32  code = 2; //失败的错误码
+}
+
+message TboxParameterGetResponse{
+	uint32 id = 1;//参数ID
+	string value = 2;//参数值
+}
+
+ 
+message AutoPilotResponse
+{
+    bool    result      = 1;
+}
+
+message WorkModeResponse
+{
+    bool    result      = 1;
+}
+
+message HmiResponse  
+{
+    bool    result      = 1;
+}
+ 
+message CancelTaskResponse  
+{
+    bool    result      = 1;
+}
+
+message UpdateRoutePathResult
+{
+    bool    result      = 1;
+}
+
+message CalibrationResponse
+{
+    bool result    = 1;
+}
+
+message CalibrationConfirmResult
+{
+    bool result    = 1;
+}
+
+message  CancelTaskConfirmResponse
+{
+    bool result    = 1;
+}
+
+message  ManualControlResponse
+{
+    bool result    = 1;
+}
+
+message  TaskFinishConfirmResponse
+{
+    bool result    = 1;
+}
+
+message VersionModelInfo
+{
+    VersionModelType version_model_type = 1;
+    string info                         = 2;
+}
+
+enum BaseLineTranslationResponse
+{
+    TRANS_NULL                                  = 0;  // 无指令
+    TRANS_ASSIGNED                              = 1;  // 手动进行基准线平移 参数无效
+    TRANS_UNASSIGNED                            = 2;  // 自动进行基准线平移 参数有效
+}
+
+enum TransferLineResponse
+{
+    TRANSFER_LINE_NULL                          = 0;
+    TRANSFER_LINE_ASSIGNED                      = 1;
+    TRANSFER_LINE_UNASSIGNED                    = 2;
+}
+
+enum LastTaskContinue
+{
+    TASK_NULL       = 0;
+    TASK_CONTINUE   = 1;   //任务继续
+    TASK_CANCEL     = 2;   //任务删除
+}
+
+enum RouteParamResponse
+{
+    ROUTE_PARAM_NULL                          = 0;
+    ROUTE_PARAM_ASSIGNED                      = 1;
+    ROUTE_PARAM_UNASSIGNED                    = 2;
+}
+
+
+

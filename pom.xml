@@ -58,6 +58,7 @@
         <module>springcloud-platform-swagger</module>
         <module>springcloud-platform-parent</module>
         <module>springcloud-platform-core</module>
+        <module>springcloud-platform-mqtt-broker</module>
     </modules>
     <dependencies>
     </dependencies>
@@ -128,6 +129,11 @@
                 <artifactId>springcloud-platform-core</artifactId>
                 <version>${springcloud-platform.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.elinxer</groupId>
+                <artifactId>springcloud-platform-mqtt-broker</artifactId>
+                <version>${springcloud-platform.version}</version>
+            </dependency>
             <!-- 统一第三方依赖包版本控制（常用才增加，少用的项目自行处理） -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -167,7 +173,6 @@
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j-spring-boot-starter.version}</version>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
     <distributionManagement>

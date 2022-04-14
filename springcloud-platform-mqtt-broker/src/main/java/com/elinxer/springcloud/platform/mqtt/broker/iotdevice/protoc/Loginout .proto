@@ -1,0 +1,62 @@
+syntax = "proto3";
+package com.elinxer.springcloud.platform.mqtt.broker.protoc;
+option java_outer_classname="Loginout";
+option optimize_for = SPEED;
+/*############################################################################*/
+// 指定文件级别选项 SPEED: 表示生成的代码运行效率高，但是由此生成的代码编译后会占用更多的空间。
+// CODE_SIZE: 和 SPEED恰恰相反，代码运行效率较低，但是由此生成的代码编译后会占用更少的空间，通常用于资源有限的平台，如Mobile。
+// LITE_RUNTIME: 生成的代码执行效率高，同时生成代码编译后的所占用的空间也是非常少。
+//可以在程序调试阶段使用 SPEED模式，而上线以后使用提升性能使用 LITE_RUNTIME 模式优化。
+/*############################################################################*/
+message Loginout
+{
+    /*
+	version：协议版本号
+    */
+    uint32 version = 1;
+	/*
+	business_type: 业务类型
+    0：无意义
+    1：登入请求
+    2：登出请求
+	3：登入响应
+	4：登出响应
+	*/
+	uint32 business_type = 2;
+    /*
+	loginout_request: 登入/登出请求message
+	*/
+    LoginoutRequest loginout_request = 3;
+	/*
+	loginout_response: 登入/登出请求回复message
+	*/
+    LoginoutResponse loginout_response = 4;
+    
+    message LoginoutRequest {
+        uint32 sequence_id = 1; /* 登入登出流水*/
+    }
+
+    message LoginoutResponse {
+	    /* 在回复登入或登出请求时，填写对应登入登出流水*/
+        uint32 sequence_id = 1;
+		/*登入/登出结果message*/
+        CommonResult loginout_result = 2;
+    }
+    
+    message CommonResult {
+	    /*
+		0:无意义
+		1：成功
+		2：失败
+		*/
+        uint32 status = 1;
+		/*
+		code: 异常状态码：待定
+		*/
+        uint32 code = 2;
+		/*
+		msg: 消息
+		*/
+        string msg = 3;
+    }
+}

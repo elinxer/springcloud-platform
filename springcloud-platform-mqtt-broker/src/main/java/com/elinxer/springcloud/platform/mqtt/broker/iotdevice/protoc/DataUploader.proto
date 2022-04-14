@@ -1,0 +1,162 @@
+syntax = "proto3";
+package com.elinxer.springcloud.platform.mqtt.broker.protoc;
+option java_outer_classname="DataUploader";
+option optimize_for = SPEED;
+/*############################################################################*/
+// 指定文件级别选项 SPEED: 表示生成的代码运行效率高，但是由此生成的代码编译后会占用更多的空间。
+// CODE_SIZE: 和 SPEED恰恰相反，代码运行效率较低，但是由此生成的代码编译后会占用更少的空间，通常用于资源有限的平台，如Mobile。
+// LITE_RUNTIME: 生成的代码执行效率高，同时生成代码编译后的所占用的空间也是非常少。
+//可以在程序调试阶段使用 SPEED模式，而上线以后使用提升性能使用 LITE_RUNTIME 模式优化。
+/*############################################################################*/
+message DataUploader {
+    Header               header                   = 1;
+    Path                 display_path             = 2;  //显示路径 选用    实时信息 1s上报
+	LocalizationInfo     localization_info        = 3;  //位置信息         实时信息 1s上报
+    ControlInfo          control_info             = 4;  //控制信息         实时信息 1s上报
+    ChassisInfo          chassis_info             = 5;  //底盘信息         实时信息 1s上报
+    PlanningInfo         planning_info            = 6;  //规划信息         实时信息 1s上报
+	repeated statusKv    status                   = 7;  //TBOX扩展状态信息 实时信息 1s上报
+    MultiControlInfo     multi_ctrl_info          = 8;  //多重协同信息     需要和事件发生时上报
+	ChassisALarmInfo     chassis_alarm_info       = 9;  //底盘故障信息     需要和事件发生时上报
+    CalibrationResult    calibration_result       = 10; //校准结果         需要和事件发生时上报
+	repeated InfoKv      info                     = 12; //存放车辆配件描述或字符信息   30s一次
+	
+    message statusKv{
+        uint64 key = 1;
+        double value = 2;
+    }
+	
+	message InfoKv{
+        uint64 key = 1;
+        string value = 2;
+    }
+}
+
+message Header
+{
+	uint32 version                                = 1; //数据上报协议版本信息
+    uint64 unix_timestamp                         = 2; //时间戳，精确到ms
+    int32  seq                                    = 3; //消息序列号
+    int32  session_id                             = 4; 
+    string task_id                                = 5;
+    string message_id                             = 6;
+    string operate_id                             = 7;
+}
+
+message ChassisALarmInfo
+{
+    repeated int32 chassis_level1_alarm_list  = 1;   //一级故障列表 NCU停车处理
+    repeated int32 chassis_level2_alarm_list  = 2;   //二级故障列表 交互终端决定是否停止作业
+    repeated int32 chassis_level3_alarm_list  = 3;   //三级故障列表 不影响作业，仅用于上报
+}
+
+message Path
+{
+    int32     total_paths_num               = 1;    //总路径数
+    int32     cur_paths_num                 = 2;    //当前路径编号
+    int32     total_point_num               = 3;    //总点数
+    repeated  Pose path                     = 4;    //POSE
+}
+
+message Pose
+{
+    double px     = 1;
+    double py     = 2;
+    double pz     = 3;
+    double yaw    = 4;      //航向角
+    double pitch  = 5;      //俯仰角
+    double roll   = 6;
+}
+
+message PlanningInfo
+{
+    int32 check_state                           = 1;  // 是否可以进行自动驾驶的自检状态 
+    int32 hmi_mode_state                        = 2;  // 当前交互终端类型
+    int32 work_mode_state                       = 3;  // 工作模式 单机2 多/主3 多/从4
+    int32 autopilot_check_state                 = 4;  // 自动驾驶自检状态 1无任务  任务不可用2  3任务可用 4 底盘准备中 ready:5  cancel_task:6
+    int32 autopilot_state                       = 5;  // 自动驾驶状态 start2 stop3 finish4 任务完成后会自动切回无任务状态
+    int32 move_state                            = 6;  // 移动状态 1静止，底盘未移动 2移动状态  
+    int32 imple_work_state                      = 7;  // 农机具作业状态 1未作业 2正在作业
+    int32 pilot_state                           = 8;  // 1:auto  2:human
+    double curtask_total_mileage                = 9;  // 当前任务下，地盘行驶的总里程
+    double curtask_total_workarea               = 10; // 当前任务下，总的已作业面积
+    double work_completion_percent              = 11; // 当前任务下，已完成任务百分比
+    double curpose_mapping_x                    = 12; // 当前X坐标在路径点上的映射
+    double curpose_mapping_y                    = 13; // 当前Y坐标在路径点上的映射
+    int32 cur_path_num                          = 14; // 当前作业路径段标号 
+    int32 task_state                            = 15;    //作业执行状态  1未执行   2正在执行  3 执行完成 4cancel task
+}
+
+message LocalizationInfo
+{ 
+    double rtk_vel                              = 1;  //实时速度
+    int32  rtk_status                           = 2;  //解状态
+    int32  gnss_sate_num                        = 3;  //GNSS当期使用卫星数
+    double x                                    = 4;  //东坐标
+    double y                                    = 5;  //北坐标
+    double z                                    = 6;  //天坐标
+    double yaw                                  = 7;  //航向角
+    double pitch                                = 8;  //俯仰角
+    double roll                                 = 9;  //横滚角
+    double longitude                            = 10; //经度
+    double latitude                             = 11; //纬度
+    double height                               = 12; //高程
+    double rtk_vel_direction                    = 13; //
+    int32 diff_age_time                         = 14; //差分龄期
+    int32 slave_ant_gnss_quality                = 15; //从天线定位解状态
+    int32 year                                  = 16; //#年
+    int32 month                                 = 17; //#月
+    int32 date                                  = 18; //#日
+    int32 hour                                  = 19; //#时
+    int32 minute                                = 20; //#分
+    double second                               = 21; //#秒
+}
+
+message ControlInfo 
+{
+    int32 arrive_state                          = 1; //位置到达标志，1：到达，0：未到达
+    double control_dev                          = 2; //控制偏差
+    int32 online_state                          = 3; //上线状态  0未上线 1上线完成
+}
+
+message MultiControlInfo
+{
+    double control_devy                         = 1; // 控制偏差y 单位cm
+    double control_devx                         = 2; // 控制偏差 x 单位cm
+    double master_vel                           = 3; // master vel
+    double slave_vel                            = 4; // slave vel
+} 
+
+message ChassisInfo
+{
+	string  vehicleType     = 1;//例“HY8088”
+	repeated infoKv  info   = 2;
+	message infoKv
+	{
+        uint32  id      = 1;//消息参数ID，参考车云协议皓耘HY8088型收获机信息表
+        double  value   = 2;//消息值
+    }
+}
+
+enum CalibrationType
+{
+    TYPE_NULL               = 0;
+    TYPE_GNSS_ANT           = 1; // GNSS天线校准
+    TYPE_WHEEL_ANGLE        = 2; // 轮角校准
+    TYPE_STEER_MOTOR        = 3; // 转向电机校准
+    TYPE_HYDRAULIC_STEER    = 4; // 液压转向校准
+    TYPE_IMU                = 5; //
+}
+
+message CalibrationResult
+{
+    enum CalibrationResultState
+    {
+        RESULT_NULL  = 0; 
+        RESULT_OK    = 1; //校准完成
+        RESULT_NG    = 2; //校准失败
+    }
+    CalibrationType calibration_type                    = 1;  //校准类型
+    CalibrationResultState calibration_result_state     = 2;  //校准结果
+}
+

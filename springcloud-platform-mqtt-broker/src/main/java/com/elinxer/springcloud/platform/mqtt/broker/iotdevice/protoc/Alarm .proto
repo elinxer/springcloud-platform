@@ -1,0 +1,51 @@
+syntax = "proto3";
+package com.elinxer.springcloud.platform.mqtt.broker.protoc;
+option java_outer_classname="Alarm";
+option optimize_for = SPEED;
+/*############################################################################*/
+// 指定文件级别选项 SPEED: 表示生成的代码运行效率高，但是由此生成的代码编译后会占用更多的空间。
+// CODE_SIZE: 和 SPEED恰恰相反，代码运行效率较低，但是由此生成的代码编译后会占用更少的空间，通常用于资源有限的平台，如Mobile。
+// LITE_RUNTIME: 生成的代码执行效率高，同时生成代码编译后的所占用的空间也是非常少。
+//可以在程序调试阶段使用 SPEED模式，而上线以后使用提升性能使用 LITE_RUNTIME 模式优化。
+/*############################################################################*/
+message Alarm {
+	Header   header                        = 1; 
+	repeated tboxAlarmInfo     tboxFault   = 2;   //TBOX故障信息
+	NCUAlarmInfo                ncuFault   = 3;   //NCU故障信息
+	message tboxAlarmInfo{
+		uint32  faultType                = 1;//故障类型，详细参考故障定义列表
+		uint32  faultValue               = 2;//故障码，具体参考故障定义列表
+	}
+	
+	message Header
+	{
+		uint32 version                                = 1; //数据上报协议版本信息
+		uint64 unix_timestamp                         = 2; //时间戳，精确到ms
+		int32  seq                                    = 3; //消息序列号
+		int32  session_id                             = 4; 
+		string task_id                                = 5;
+		string message_id                             = 6;
+		string operate_id                             = 7;
+	}
+	
+	message NCUAlarmInfo  //NCU
+	{
+		enum LevelOneList
+		{
+			ONE_NULL = 0;  //停车
+		}
+		enum LevelTwoList
+		{
+			TWO_NULL = 0; //终端确认
+		}
+
+		enum LevelThreeList 
+		{
+			THREE_NULL = 0; //上报
+		}
+		repeated int32 level1_alarm_list  = 1;   //一级故障列表 NCU停车处理
+		repeated int32 level2_alarm_list  = 2;   //二级故障列表 交互终端决定是否停止作业
+		repeated int32 level3_alarm_list  = 3;   //三级故障列表 不影响作业，仅用于上报
+	}
+}
+
