@@ -1,8 +1,3 @@
-/**
- * @description
- * @author caoxiaoguang
- * @create 2021-09-18 9:43
- **/
 package com.elinxer.springcloud.platform.mqtt.broker.config;
 
 import com.elinxer.springcloud.platform.mqtt.broker.influxdb.InfluxDBConnectionFactory;

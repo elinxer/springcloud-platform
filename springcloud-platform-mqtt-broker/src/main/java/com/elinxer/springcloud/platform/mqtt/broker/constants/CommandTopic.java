@@ -1,8 +1,3 @@
-/**
- * @description
- * @author caoxiaoguang
- * @create 2021-09-29 19:30
- **/
 package com.elinxer.springcloud.platform.mqtt.broker.constants;
 
 import java.util.HashMap;

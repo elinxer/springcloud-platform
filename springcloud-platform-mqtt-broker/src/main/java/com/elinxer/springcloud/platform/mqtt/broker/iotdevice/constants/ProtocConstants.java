@@ -2,7 +2,7 @@ package com.elinxer.springcloud.platform.mqtt.broker.iotdevice.constants;
 
 /**
  * @description
- * @author caoxiaoguang
+ * @author elinx
  * @create 2021-10-09 16:56
  **/
 

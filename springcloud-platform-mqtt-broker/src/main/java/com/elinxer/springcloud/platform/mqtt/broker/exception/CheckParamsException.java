@@ -1,8 +1,3 @@
-/**
- * @description
- * @author caoxiaoguang
- * @create 2021-10-08 16:19
- **/
 package com.elinxer.springcloud.platform.mqtt.broker.exception;
 
 /**

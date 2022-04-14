@@ -1,7 +1,7 @@
 package com.elinxer.springcloud.platform.mqtt.broker.iotdevice.handler;
 /**
  * @description mqtt 有效负载处理器
- * @author caoxiaoguang
+ * @author elinx
  * @create 2021-10-08 17:51
  **/
 

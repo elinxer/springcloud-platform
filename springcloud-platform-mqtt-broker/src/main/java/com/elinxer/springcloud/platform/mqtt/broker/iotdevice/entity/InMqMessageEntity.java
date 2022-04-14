@@ -1,6 +1,6 @@
 /**
  * @description
- * @author caoxiaoguang
+ * @author elinx
  * @create 2021-10-13 14:33
  **/
 package com.elinxer.springcloud.platform.mqtt.broker.iotdevice.entity;

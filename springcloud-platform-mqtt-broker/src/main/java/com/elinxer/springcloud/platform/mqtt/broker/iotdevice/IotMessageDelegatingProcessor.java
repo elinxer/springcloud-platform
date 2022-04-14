@@ -1,8 +1,3 @@
-/**
- * @description
- * @author caoxiaoguang
- * @create 2021-10-11 17:08
- **/
 package com.elinxer.springcloud.platform.mqtt.broker.iotdevice;
 
 import com.elinxer.springcloud.platform.mqtt.broker.iotdevice.header.IotDeviceType;

@@ -13,9 +13,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Objects;
 
-/**
- * @author elinx
- */
+
 @Slf4j
 @SpringBootApplication
 public class SpringcloudPlatformMqttBrokerApplication {

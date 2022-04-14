@@ -1,8 +1,3 @@
-/**
- * @description
- * @author caoxiaoguang
- * @create 2021-09-06 15:31
- **/
 package com.elinxer.springcloud.platform.mqtt.broker.config;
 
 import com.elinxer.springcloud.platform.mqtt.broker.constants.ClusterTopic;

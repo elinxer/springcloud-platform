@@ -1,7 +1,7 @@
 package com.elinxer.springcloud.platform.mqtt.broker.iotdevice.header;
 /**
  * @description 接入网联终端类型
- * @author caoxiaoguang
+ * @author elinx
  * @create 2021-09-30 15:19
  **/
 

@@ -1,8 +1,3 @@
-/**
- * @description
- * @author caoxiaoguang
- * @create 2021-10-11 19:54
- **/
 package com.elinxer.springcloud.platform.mqtt.broker.iotdevice.constants;
 
 public class TopicConstants {

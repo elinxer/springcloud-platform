@@ -1,8 +1,3 @@
-/**
- * @description
- * @author caoxiaoguang
- * @create 2021-12-15 15:53
- **/
 package com.elinxer.springcloud.platform.mqtt.broker.iotdevice.handler;
 
 import com.elinxer.springcloud.platform.mqtt.broker.iotdevice.constants.TopicConstants;

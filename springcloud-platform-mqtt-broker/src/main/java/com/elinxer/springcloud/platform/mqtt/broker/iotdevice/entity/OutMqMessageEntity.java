@@ -1,6 +1,6 @@
 /**
  * @description 数据上报到mq的消息体格式
- * @author caoxiaoguang
+ * @author elinx
  * @create 2021-10-11 20:34
  **/
 package com.elinxer.springcloud.platform.mqtt.broker.iotdevice.entity;
