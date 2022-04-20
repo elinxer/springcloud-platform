@@ -73,15 +73,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ChannelHandler.Sharable
 @Component
 public class BrokerHandler extends SimpleChannelInboundHandler<MqttMessage> implements Watcher {
+
     //@formatter:off
+
     /**
      * channel 群组
      */
     public static final ChannelGroup CHANNELS = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+
     /**
      * 历史最大连接数量
      */
     public static final AtomicInteger MAX_ACTIVE_SIZE = new AtomicInteger(0);
+
     /**
      * broker 启动时间
      */
@@ -99,6 +103,7 @@ public class BrokerHandler extends SimpleChannelInboundHandler<MqttMessage> impl
 
     @Autowired(required = false)
     private IotMessageDelegatingProcessor iotMessageDelegatingProcess;
+
     //@formatter:on
 
     public BrokerHandler(MqttxConfig config, MessageDelegatingHandler messageDelegatingHandler,

@@ -71,56 +71,75 @@ public class BrokerInitializer implements DisposableBean {
      * ip
      */
     private final String host;
+
     /**
      * 端口
      */
     private final Integer port;
+
     /**
      * socket 开关
      */
     private final Boolean enableSocket;
+
     /**
      * 心跳
      */
     private final Duration heartbeat;
+
     /**
      * websocket 端口
      */
     private final Integer wsPort;
+
     /**
      * websocket 地址
      */
     private final String websocketPath;
+
     /**
      * 握手队列
      */
     private final Integer soBacklog;
+
     /**
      * ssl开关
      */
     private final Boolean sslEnable;
+
     /**
      * 客户端证书校验
      */
     private final ClientAuth clientAuth;
+
     /**
      * 证书工具
      */
     private final SslUtils sslUtils;
+
     /**
      * broker handler
      */
     private final BrokerHandler brokerHandler;
+
     /**
      * websocket 开关
      */
     private final Boolean enableWebsocket, enableSysTopic;
+
+    /**
+     * 数据探针句柄
+     */
     private final ProbeHandler probeHandler;
+
     /**
      * reactor 线程，提供给 socket, websocket 使用
      */
     private EventLoopGroup boss, work;
 
+    /**
+     * SSL上下文内容
+     */
     private SSLContext sslContext;
 
     //@formatter:on
@@ -233,15 +252,12 @@ public class BrokerInitializer implements DisposableBean {
      * socket 服务
      */
     private void socket() throws InterruptedException {
-        ServerBootstrap b = new ServerBootstrap();
+        ServerBootstrap bootstrap = new ServerBootstrap();
 
-        if (Epoll.isAvailable()) {
-            b.channel(EpollServerSocketChannel.class);
-        } else {
-            b.channel(NioServerSocketChannel.class);
-        }
+        // channel通道选择NIO线程模型
+        bootstrap.channel(Epoll.isAvailable() ? EpollServerSocketChannel.class : NioServerSocketChannel.class);
 
-        b
+        bootstrap
                 .group(boss, work)
                 .handler(new LoggingHandler(LogLevel.INFO))
                 .option(ChannelOption.SO_BACKLOG, soBacklog)
@@ -267,7 +283,8 @@ public class BrokerInitializer implements DisposableBean {
                         pipeline.addLast(brokerHandler);
                     }
                 });
-        b.bind(host, port).sync();
+
+        bootstrap.bind(host, port).sync();
     }
 
     /**
@@ -289,15 +306,12 @@ public class BrokerInitializer implements DisposableBean {
      * </ol>
      */
     private void websocket() throws InterruptedException {
-        ServerBootstrap b = new ServerBootstrap();
+        ServerBootstrap bootstrap = new ServerBootstrap();
 
-        if (Epoll.isAvailable()) {
-            b.channel(EpollServerSocketChannel.class);
-        } else {
-            b.channel(NioServerSocketChannel.class);
-        }
+        // channel通道选择NIO线程模型
+        bootstrap.channel(Epoll.isAvailable() ? EpollServerSocketChannel.class : NioServerSocketChannel.class);
 
-        b
+        bootstrap
                 .group(boss, work)
                 .handler(new LoggingHandler(LogLevel.INFO))
                 .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -326,7 +340,7 @@ public class BrokerInitializer implements DisposableBean {
                     }
                 });
 
-        b.bind(host, wsPort).sync();
+        bootstrap.bind(host, wsPort).sync();
     }
 
     @Override
