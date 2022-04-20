@@ -59,6 +59,7 @@
         <module>springcloud-platform-parent</module>
         <module>springcloud-platform-core</module>
         <module>springcloud-platform-mqtt-broker</module>
+        <module>springcloud-platform-websocket</module>
     </modules>
     <dependencies>
     </dependencies>
