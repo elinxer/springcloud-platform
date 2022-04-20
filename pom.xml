@@ -48,6 +48,35 @@
         <!-- swagger knife4j 增强版文档 -->
         <knife4j-spring-boot-starter.version>3.0.3</knife4j-spring-boot-starter.version>
 
+        <!--redis相关  -->
+        <hessian.version>4.0.51</hessian.version>
+        <redssion.version>3.11.6</redssion.version>
+
+        <!--spring-security 相关  -->
+        <spring.social.version>1.1.6.RELEASE</spring.social.version>
+        <spring-security.version>5.1.1.RELEASE</spring-security.version>
+        <spring-security-jwt.version>1.0.11.RELEASE</spring-security-jwt.version>
+        <spring-security-oauth.version>2.3.6.RELEASE</spring-security-oauth.version>
+        <spring-social.version>1.1.6.RELEASE</spring-social.version>
+        <kaptcha.version>0.0.9</kaptcha.version>
+
+        <!--mybatis相关  -->
+        <mysql-connector-java.version>8.0.21</mysql-connector-java.version>
+        <druid.version>1.1.14</druid.version>
+        <mybatis.version>3.5.6</mybatis.version>
+        <mybatis-plus.version>3.3.2</mybatis-plus.version>
+        <mybatis-plus-core.version>3.4.2</mybatis-plus-core.version>
+        <mybatis-plus-annotation.version>3.4.2</mybatis-plus-annotation.version>
+        <mybatis-plus-generator.version>3.4.1</mybatis-plus-generator.version>
+        <mybatis-plus-boot-starter.version>3.4.2</mybatis-plus-boot-starter.version>
+        <mybatis-spring-boot-starter.version>2.1.4</mybatis-spring-boot-starter.version>
+        <pagehelper-spring-boot-starter.version>1.2.13</pagehelper-spring-boot-starter.version>
+        <velocity-engine-core.version>2.3</velocity-engine-core.version>
+        <freemarker.version>2.3.31</freemarker.version>
+        <sharding-jdbc-spring-boot-starter.version>4.1.1</sharding-jdbc-spring-boot-starter.version>
+
+
+
     </properties>
     <modules>
         <module>springcloud-platform-web</module>
@@ -59,6 +88,8 @@
         <module>springcloud-platform-parent</module>
         <module>springcloud-platform-core</module>
         <module>springcloud-platform-mqtt-broker</module>
+        <module>springcloud-platform-gateway</module>
+        <module>springcloud-platform-security</module>
     </modules>
     <dependencies>
     </dependencies>
@@ -134,6 +165,11 @@
                 <artifactId>springcloud-platform-mqtt-broker</artifactId>
                 <version>${springcloud-platform.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.elinxer</groupId>
+                <artifactId>springcloud-platform-security</artifactId>
+                <version>${springcloud-platform.version}</version>
+            </dependency>
             <!-- 统一第三方依赖包版本控制（常用才增加，少用的项目自行处理） -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -173,6 +209,43 @@
                 <artifactId>knife4j-spring-boot-starter</artifactId>
                 <version>${knife4j-spring-boot-starter.version}</version>
             </dependency>
+            <!-- redis/cache 相关 -->
+            <dependency>
+                <groupId>com.caucho</groupId>
+                <artifactId>hessian</artifactId>
+                <version>${hessian.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redssion.version}</version>
+            </dependency>
+            <!-- end redis/  -->
+            <!-- spring-security 相关   -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-jwt</artifactId>
+                <version>${spring-security-jwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security.oauth</groupId>
+                <artifactId>spring-security-oauth</artifactId>
+                <version>${spring-security-oauth.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security.oauth</groupId>
+                <artifactId>spring-security-oauth2</artifactId>
+                <version>${spring-security-oauth.version}</version>
+            </dependency>
+            <!-- end security/  -->
+
+            <!-- mybatis 相关   -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-core</artifactId>
+                <version>${mybatis-plus-core.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <distributionManagement>

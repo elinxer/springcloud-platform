@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: hx-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${nacos_address}:${nacos_port}
+        namespace: ${nacos_namespace}
+      config:
+        server-addr: ${nacos_address}:${nacos_port}
+        namespace: ${nacos_namespace}
+        group: DEFAULT_GROUP
+        file-extension: yaml
+        extension-configs:
+          - data-id: common.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+    gateway:
+      httpclient:
+        connect-timeout: 600000
+        response-timeout: 300s
+
+feign:
+  hystrix:
+    enabled: false
+  client:
+    config:
+      default:
+        connectTimeout: 100000
+        readTimeout: 100000

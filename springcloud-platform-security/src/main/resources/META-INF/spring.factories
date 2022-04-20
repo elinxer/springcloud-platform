@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.hx.platform.security.config.FeignInterceptorConfig,\
+com.hx.platform.security.config.PasswordConfig,\
+com.hx.platform.security.config.RestTemplateConfig,\
+com.hx.platform.security.config.TokenStoreConfig
